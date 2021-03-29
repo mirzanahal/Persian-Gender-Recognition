@@ -228,7 +228,7 @@ def extract_feature(text):
 def generate_features(dataset, label):
     features = {}
     for key, data in dataset.items():
-        features = extract_feature(data)
-        features['Label'] = label
-        features[key] = features
+        data_features = extract_feature(data)
+        data_features['Label'] = label
+        features[key] = data_features
     return pd.DataFrame(features)
