@@ -230,5 +230,6 @@ def generate_features(dataset, label):
     for key, data in dataset.items():
         data_features = extract_feature(data)
         data_features['Label'] = label
-        features[key] = data_features
+        print('Data {} features imported'.format(key))
+        features[int(key)] = data_features
     return pd.DataFrame(features)
