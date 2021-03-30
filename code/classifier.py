@@ -36,7 +36,12 @@ def create_svc_model(**kwargs):
         gamma = kwargs['gamma']
     else:
         gamma = 'auto'
-    return SVC(kernel=kernel, gamma=gamma)
+    if 'probability' in kwargs.keys():
+        probability = kwargs['probability']
+    else:
+        probability = True
+    
+    return SVC(kernel=kernel, gamma=gamma, probability=probability)
 
 
 def create_naive_bayes_model(**kwargs):
@@ -105,9 +110,9 @@ class Classifier:
 
     def fit(self, X, y):
         self.model.fit(X, y)
-        return self.test(X)
+        return self.predict(X)
 
-    def test(self, X):
+    def predict(self, X):
         return self.model.predict_proba(X)
 
     def train(self, X, y, n_folds=10):
