@@ -184,14 +184,29 @@ def extract_feature(text):
     # ویژگی های کلمات دستوری
     #N/تعداد ضمیر فاعلی
     features['F30'] = utils.count_chars(text, config.subjective_pronounce)
+    for i in range(len(config.subjective_pronounce)):
+        id = 'F30-' + str(i+1)
+        features[id] = text.count(config.subjective_pronounce[i])
     #N/تعداد ضمایر پرسشی
     features['F31'] = utils.count_chars(text, config.question)
+    for i in range(len(config.question)):
+        id = 'F31-' + str(i+1)
+        features[id] = text.count(config.question[i])
     #N/تعداد حرف ربط
     features['F32'] = utils.count_chars(text, config.conjunctions)
+    for i in range(len(config.conjunctions)):
+        id = 'F32-' + str(i+1)
+        features[id] = text.count(config.conjunctions[i])
     #N/حرف ربط گروهی
     features['F33'] = utils.count_chars(text, config.group_pro)
+    for i in range(len(config.group_pro)):
+        id = 'F33-' + str(i+1)
+        features[id] = text.count(config.group_pro[i])
     #N/صوت
     features['F34'] = utils.count_chars(text, config.sounds)
+    for i in range(len(config.sounds)):
+        id = 'F34-' + str(i+1)
+        features[id] = text.count(config.sounds[i])
     #N/حرف اضافه
     features['F35'] = tags_list.count('P') + tags_list.count('POSTP')
         
