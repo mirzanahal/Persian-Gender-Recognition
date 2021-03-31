@@ -49,7 +49,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     data = args.data
-    model_path = os.path.join(args.output, 'embedding_gensim.model')
+    model_path = os.path.join(data_path.MODEL_PATH, 'embedding_gensim.model')
     embedded_texts_path = os.path.join(data_path.DATA_PATH, '{}_embedded_texts_gensim.csv'.format(args.output))
     min_count = args.min_count
     vector_size = args.vector_size

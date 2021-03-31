@@ -12,3 +12,4 @@ FEMALE_DATA_PATH = '../data/train/female'
 MALE_DATA_PATH = '../data/train/male'
 
 DATA_PATH = '../data/'
+MODEL_PATH = '../model'
