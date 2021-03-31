@@ -26,41 +26,21 @@ def get_grammatical_features(dataset):
         conjunctions = [utils.normalize_text(conjunction) for conjunction in config.conjunctions]
         subjective_pronounces = [utils.normalize_text(subjective_pronounce) for subjective_pronounce in config.subjective_pronounce]
 
-        # ویژگی های کلمات دستوری
-        #N/تعداد ضمیر فاعلی
         feature['GRM_F30'] = utils.count_chars(text, subjective_pronounces)
-        for i in range(len(subjective_pronounces)):
-            id = 'F30-' + str(i+1)
-            feature[id] = text.count(subjective_pronounces[i])
-        #N/تعداد ضمایر پرسشی
+
         feature['GRM_F31'] = utils.count_chars(text, config.question)
-        for i in range(len(config.question)):
-            id = 'F31-' + str(i+1)
-            feature[id] = text.count(config.question[i])
-        #N/تعداد حرف ربط
+ 
         feature['GRM_F32'] = utils.count_chars(text, conjunctions)
-        for i in range(len(conjunctions)):
-            id = 'F32-' + str(i+1)
-            feature[id] = text.count(conjunctions[i])
-        #N/حرف ربط گروهی
+
         feature['GRM_F33'] = utils.count_chars(text, group_pros)
-        for i in range(len(group_pros)):
-            id = 'F33-' + str(i+1)
-            feature[id] = text.count(group_pros[i])
-        #N/صوت
+
         feature['GRM_F34'] = utils.count_chars(text, sounds)
-        for i in range(len(sounds)):
-            id = 'F34-' + str(i+1)
-            feature[id] = text.count(sounds[i])
-        #N/حرف اضافه
+
         feature['GRM_F35'] = tags_list.count('P') + tags_list.count('POSTP')
 
         feature['GRM_F40'] = tags_list.count('AJ')
-        # تعداد قیود
         feature['GRM_F41'] = tags_list.count('ADV')
-        # تعداد ضمایر
         feature['GRM_F42'] = tags_list.count('PRO')
-        # تعداد عدد
         feature['GRM_F51'] = tags_list.count('NUM')
 
         feature['number'] = key
@@ -88,12 +68,14 @@ if __name__ == '__main__':
 
     female_features_pdf = get_grammatical_features(female_dataset)
     female_features_pdf['label'] = config.FEMALE_LABEL
+    female_features_pdf.to_csv('../data/female_grammatical_features.csv')
 
     if verbose:
         print('Genrate male Grammatical features ...')
 
     male_features_pdf = get_grammatical_features(male_dataset)
     male_features_pdf['label'] = config.MALE_LABEL
+    male_features_pdf.to_csv('../data/male_grammatical_features.csv')
 
     features_pdf = pd.concat([female_features_pdf, male_features_pdf], axis=0)
 
@@ -101,6 +83,7 @@ if __name__ == '__main__':
         print('Grammatical Features for {} sentences: {} male, {} female calculated.'.format(len(features_pdf), len(female_features_pdf), len(male_features_pdf)))
 
     features_pdf.to_csv(output_path)
+
     if verbose:
         print('Two dataset concatenate and saved in {} with shape {}.'.format(output_path, features_pdf.shape))
     
