@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd 
 import numpy as np
+import hazm
 
-from tabulate import tabulate
+from itertools import chain
 
-import os
-from config import MODEL_SCORE_METRICS
+import config
 
 
 
@@ -16,6 +16,71 @@ def count_chars(s, li):
 
 def import_name_from(name):
     return int(name[:-4])
+
+
+def tokenize_word_by(word, delimiters):
+    if len(delimiters) == 0 : return [word]
+    delimiter = delimiters.pop()
+    if delimiter in word:
+        splitted_words = word.split(delimiter)
+        result = []
+        for splitted_word in splitted_words:
+            if splitted_word == '':
+                result.append(delimiter)
+            else:
+                result += tokenize_word_by(splitted_word, delimiters)
+            result.append(delimiter)
+        result.pop()
+        return result
+    return tokenize_word_by(word, delimiters)
+          
+
+def normalize_word(word):
+    delimiters = config.numbers + config.special_chars
+    delimiters_count = count_chars(word, delimiters)
+    if delimiters_count != 0 and delimiters_count != len(word):
+        return tokenize_word_by(word, delimiters)
+    return [word]
+
+
+def normalize_text(text):
+    normalizer = hazm.Normalizer()
+    normalized_text = normalizer.normalize(text)
+    return normalized_text
+
+
+def tokenize_word(text):
+    words = []
+    raw_words = hazm.word_tokenize(text)
+    for raw_word in raw_words:
+        words += normalize_word(raw_word)
+    return words
+
+
+def tokenize_sentence(word_list):
+    sentences = []
+    sentence = []
+    for i in range(len(word_list)):
+        word = word_list[i]
+        sentence.append(word)
+        if word in config.finished_chars:
+            if word_list[min(i+1, len(word_list)-1)] in config.finished_chars: continue
+            sentences.append(sentence)
+            sentence = []
+    if len(sentence) != 0:
+        sentence.append('.')
+        sentences.append(sentence)
+    return sentences 
+
+
+def tokenize_word_and_sentence(text, include_special_chars=False):
+    primary_word_list = tokenize_word(text)
+    sentences_list  = tokenize_sentence(primary_word_list)
+    if include_special_chars:
+        words_list = [word for word in list(chain(*sentences_list)) if word not in config.special_chars]
+    else:
+        words_list = [word for word in list(chain(*sentences_list))]
+    return words_list, sentences_list
 
 
 def import_positive_negative_words_from(path, positive_words_path, negative_words_path):
@@ -32,7 +97,7 @@ def import_positive_negative_words_from(path, positive_words_path, negative_word
 
 def report(scores):
     metrics = []
-    for metric in MODEL_SCORE_METRICS:
+    for metric in config.MODEL_SCORE_METRICS:
         row = {}
         metric_scores = scores['test_' + metric]
         for i in range(len(metric_scores)):

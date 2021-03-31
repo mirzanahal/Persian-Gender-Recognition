@@ -1,4 +1,6 @@
 
+FEMALE_LABEL = 0
+MALE_LABEL = 1
 
 MODEL_SCORE_METRICS = ['precision', 'recall', 'f1', 'accuracy']
 

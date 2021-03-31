@@ -10,3 +10,5 @@ GENDER_RECOGNITION_MODEL_PATH = '../model/gender_recognition_model.pkl'
 
 FEMALE_DATA_PATH = '../data/train/female'
 MALE_DATA_PATH = '../data/train/male'
+
+DATA_PATH = '../data/'
