@@ -45,13 +45,11 @@ def get_text_dependent_features(dataset):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Gensim Word Embedding Features')
-    parser.add_argument('--data', type=str, default='../data/train/', help='path to dataset')
-    parser.add_argument('--output', type=str, default='', help='output name')
+    parser.add_argument('--output', type=str, default='', help='output path')
     parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
     args = parser.parse_args()
 
-    data = args.data
-    output_path = os.path.join(data_path.DATA_PATH, '{}text_dependent_features.csv'.format(args.output))
+    output_path = os.path.join(data_path.DATA_PATH, args.output, 'text_dependent_features.csv')
     verbose = args.verbose
 
     female_dataset = data_loader.load_dataset(data_path.FEMALE_DATA_PATH)
