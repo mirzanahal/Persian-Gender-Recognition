@@ -59,8 +59,7 @@ def embed_texts(method, model, sentences, vector_size):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Gensim Word Embedding Features')
     parser.add_argument('--method', default='gensim', const='gensim', nargs='?', choices=['fasttext', 'gensim'], help='method for embedding words fasttext or gensim (default: %(default)s)')
-    parser.add_argument('--data', type=str, default='../data/train/', help='path to dataset')
-    parser.add_argument('--output', type=str, default='', help='output name')
+    parser.add_argument('--output', type=str, default='', help='output path')
     parser.add_argument('--min-count', type=int, default=1, help='The minimum count of words to consider when training the model; words with occurrence less than this count will be ignored.')
     parser.add_argument('--vector-size', type=int, default=50, help='The number of dimensions of the embeddings')
     parser.add_argument('--window', type=int, default=5, help='The maximum distance between a target word and words around the target word.')
@@ -69,7 +68,6 @@ if __name__ == '__main__':
     parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
     args = parser.parse_args()
 
-    data = args.data
     min_count = args.min_count
     vector_size = args.vector_size
     window = args.window
@@ -77,12 +75,13 @@ if __name__ == '__main__':
     sg = args.sg
     verbose = args.verbose
     method = args.method
-    embedded_texts_path = os.path.join(data_path.DATA_PATH, '{}embedding_{}.csv'.format(args.output, method))
+    embedded_texts_path = os.path.join(data_path.DATA_PATH, args.output, 'embedding_{}.csv'.format(method))
 
+    female_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.FEMALE_DATA_PATH)
+    male_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.MALE_DATA_PATH)
 
-
-    female_dataset = data_loader.load_dataset(data_path.FEMALE_DATA_PATH)
-    male_dataset = data_loader.load_dataset(data_path.MALE_DATA_PATH)
+    female_dataset = data_loader.load_dataset(female_data_path)
+    male_dataset = data_loader.load_dataset(male_data_path)
 
     female_sentences_list = get_sentences(female_dataset)
     male_sentences_list = get_sentences(male_dataset)

@@ -10,8 +10,8 @@ FASTTEXT_PERSIAN_MODEL_PATH = '../model/cc.fa.300.bin'
 
 GENDER_RECOGNITION_MODEL_PATH = '../model/gender_recognition_model.pkl'
 
-FEMALE_DATA_PATH = '../data/train/female'
-MALE_DATA_PATH = '../data/train/male'
+FEMALE_DATA_PATH = 'female'
+MALE_DATA_PATH = 'male'
 
 DATA_PATH = '../data/'
 MODEL_PATH = '../model'

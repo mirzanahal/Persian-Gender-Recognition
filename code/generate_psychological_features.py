@@ -48,7 +48,6 @@ def get_psychological_features(dataset):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Psychological Features')
-    parser.add_argument('--data', type=str, default='../data/train/', help='path to dataset')
     parser.add_argument('--output', type=str, default='', help='output path')
     parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
     args = parser.parse_args()
@@ -56,8 +55,11 @@ if __name__ == '__main__':
     output_path = os.path.join(data_path.DATA_PATH, args.output, 'psychological_features.csv')
     verbose = args.verbose
 
-    female_dataset = data_loader.load_dataset(data_path.FEMALE_DATA_PATH)
-    male_dataset = data_loader.load_dataset(data_path.MALE_DATA_PATH)
+    female_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.FEMALE_DATA_PATH)
+    male_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.MALE_DATA_PATH)
+
+    female_dataset = data_loader.load_dataset(female_data_path)
+    male_dataset = data_loader.load_dataset(male_data_path)
 
     if verbose:
         print('Genrate female Psychological features ...')
