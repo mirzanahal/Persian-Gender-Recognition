@@ -60,7 +60,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Gensim Word Embedding Features')
     parser.add_argument('--method', default='gensim', const='gensim', nargs='?', choices=['fasttext', 'gensim'], help='method for embedding words fasttext or gensim (default: %(default)s)')
     parser.add_argument('--data', type=str, default='../data/train/', help='path to dataset')
-    parser.add_argument('--output', type=str, default='output', help='output name')
+    parser.add_argument('--output', type=str, default='', help='output name')
     parser.add_argument('--min-count', type=int, default=1, help='The minimum count of words to consider when training the model; words with occurrence less than this count will be ignored.')
     parser.add_argument('--vector-size', type=int, default=50, help='The number of dimensions of the embeddings')
     parser.add_argument('--window', type=int, default=5, help='The maximum distance between a target word and words around the target word.')
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     sg = args.sg
     verbose = args.verbose
     method = args.method
-    embedded_texts_path = os.path.join(data_path.DATA_PATH, '{}_embedded_texts_{}.csv'.format(args.output, method))
+    embedded_texts_path = os.path.join(data_path.DATA_PATH, '{}embedding_{}.csv'.format(args.output, method))
 
 
 
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
     embedded_text = pd.concat([female_embedded_texts, male_embedded_texts], axis=0)
     embedded_text.to_csv(embedded_texts_path)
-    
+
     if verbose:
         print('Two dataset concatenate and saved in {} with shape {}.'.format(embedded_texts_path, embedded_text.shape))
     
