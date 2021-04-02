@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 
 from sklearn.preprocessing import StandardScaler
-from os.path import isfile
 from sklearn.metrics import accuracy_score
 
 import data_path
