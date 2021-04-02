@@ -1,4 +1,12 @@
 
+FEATURES = {
+    'embedding' : True,
+    'psychological': True,
+    'structural': True,
+    'syntactics': True,
+    'text_dependent': True,
+    'word_dependent': True,
+}
 
 
 FEMALE_LABEL = 0
