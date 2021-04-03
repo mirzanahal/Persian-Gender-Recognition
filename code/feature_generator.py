@@ -44,8 +44,15 @@ def generate_features(path, method):
         if (not exists(join(path, 'syntactics_features.csv'))):
             system('python generate_syntactics_features.py --verbose --output {}'.format(path))
         syntactics_features = pd.read_csv(join(path, 'syntactics_features.csv'), index_col=0)
-        features_list.append(syntactics_features)                   
-                
+        features_list.append(syntactics_features)     
+
+    #grammatical_features
+    if config.FEATURES['grammatical']:
+        if (not exists(join(path, 'grammatical_features.csv'))):
+            system('python generate_grammatical_features.py --verbose --output {}'.format(path))
+        grammatical_features = pd.read_csv(join(path, 'grammatical_features.csv'), index_col=0)
+        features_list.append(grammatical_features)
+
     #text_dependent_features
     if config.FEATURES['text_dependent']:
         if (not exists(join(path, 'text_dependent_features.csv'))):

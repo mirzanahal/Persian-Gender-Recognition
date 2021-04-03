@@ -4,6 +4,7 @@ FEATURES = {
     'psychological': True,
     'structural': True,
     'syntactics': True,
+    'grammatical': True,
     'text_dependent': True,
     'word_dependent': True,
 }
