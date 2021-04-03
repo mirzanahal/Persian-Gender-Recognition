@@ -115,7 +115,7 @@ def plot_feature_importance(feature_importance, X):
     indices = np.argsort(feature_importance)
     y_labels = [X.columns[idx] for idx in indices]
 
-    plt.figure(figsize=(10, 15))
+    plt.figure(figsize=(10, 20))
     plt.title("Feature importances")
     plt.barh(range(X.shape[1]), feature_importance[indices], color="r", align="center")
     plt.yticks(range(X.shape[1]), y_labels)
