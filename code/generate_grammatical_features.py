@@ -55,11 +55,11 @@ if __name__ == '__main__':
     parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
     args = parser.parse_args()
 
-    output_path = os.path.join(data_path.DATA_PATH, args.output, 'grammatical_features.csv')
+    output_path = os.path.join(args.output, 'grammatical_features.csv')
     verbose = args.verbose
 
-    female_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.FEMALE_DATA_PATH)
-    male_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.MALE_DATA_PATH)
+    female_data_path = os.path.join(args.output, data_path.FEMALE_DATA_PATH)
+    male_data_path = os.path.join(args.output, data_path.MALE_DATA_PATH)
 
     female_dataset = data_loader.load_dataset(female_data_path)
     male_dataset = data_loader.load_dataset(male_data_path)

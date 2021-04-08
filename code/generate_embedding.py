@@ -46,7 +46,7 @@ def embed_texts(method, model, sentences, vector_size):
         if method == 'gensim':
             embedded = embed_gensim(model, sentence, vector_size)
         else:
-            embedded = embed_fasttext()
+            embedded = embed_fasttext(model, sentence)
 
         embedded_dict = {}
         for i in range(len(embedded)):
@@ -75,10 +75,10 @@ if __name__ == '__main__':
     sg = args.sg
     verbose = args.verbose
     method = args.method
-    embedded_texts_path = os.path.join(data_path.DATA_PATH, args.output, 'embedding_{}.csv'.format(method))
+    embedded_texts_path = os.path.join(args.output, 'embedding_{}.csv'.format(method))
 
-    female_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.FEMALE_DATA_PATH)
-    male_data_path = os.path.join(data_path.DATA_PATH, args.output, data_path.MALE_DATA_PATH)
+    female_data_path = os.path.join(args.output, data_path.FEMALE_DATA_PATH)
+    male_data_path = os.path.join(args.output, data_path.MALE_DATA_PATH)
 
     female_dataset = data_loader.load_dataset(female_data_path)
     male_dataset = data_loader.load_dataset(male_data_path)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     if verbose:
         print('Embedding female dataset ...')
 
-    female_embedded_texts = embed_texts(method, model, zip(female_dataset.keys(), female_sentences_list))
+    female_embedded_texts = embed_texts(method, model, zip(female_dataset.keys(), female_sentences_list), vector_size)
     female_embedded_texts['label'] = config.FEMALE_LABEL
 
     if verbose:
