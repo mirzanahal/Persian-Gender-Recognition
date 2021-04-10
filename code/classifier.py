@@ -119,6 +119,8 @@ class Classifier:
         cv = ShuffleSplit(n_splits=n_folds, test_size=0.1, random_state=0)
         scores = cross_validate(self.model, X, y, scoring=MODEL_SCORE_METRICS, cv=cv)
         utils.report(scores)
+    def predict_label(self, X):
+        return self.model.predict(X)
         
         
 
