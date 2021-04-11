@@ -40,8 +40,16 @@ def create_svc_model(**kwargs):
         probability = kwargs['probability']
     else:
         probability = True
+    if 'tol' in kwargs.keys():
+        tol = kwargs['tol']
+    else:
+        tol = 1e-3
+    if 'C' in kwargs.keys():
+        C = kwargs['C']
+    else:
+        C = 1.0
     
-    return SVC(kernel=kernel, gamma=gamma, probability=probability)
+    return SVC(kernel=kernel, gamma=gamma, probability=probability, tol=tol, C=C)
 
 
 def create_naive_bayes_model(**kwargs):

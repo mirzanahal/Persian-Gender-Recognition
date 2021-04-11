@@ -4,6 +4,7 @@ import numpy as np
 import hazm
 
 from itertools import chain
+from sklearn.metrics import accuracy_score
 
 import config
 
@@ -122,3 +123,32 @@ def plot_feature_importance(feature_importance, X):
     plt.ylim([-1, X.shape[1]])
     plt.show()
 
+
+def calculate_accuracy(model, features, labels):
+    predictions = model.predict_label(features)
+    return accuracy_score(labels, predictions)
+
+
+def plot_line_chart(x, y_list, xlabel, ylabel, title):
+    for label, y in y_list.items():
+        plt.plot(x, y, label=label)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+def create_dataframe_from_feature_list(feature_list):
+    pdf = feature_list.pop()
+    for feature in feature_list:
+        pdf = pd.merge(pdf, feature, left_on=['label', 'number'], right_on=['label', 'number'])
+    pdf = pdf.drop('number', axis=1)
+    return pdf
+
+
+def split_features_and_labels(dataset_pdf, label):
+    labels = dataset_pdf[label]
+    features = dataset_pdf.drop(label, axis=1)
+    return features, labels

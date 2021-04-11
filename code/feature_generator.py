@@ -67,12 +67,9 @@ def generate_features(path, method):
         word_dependent_features = pd.read_csv(join(path, 'word_dependent_features.csv'), index_col=0)      
         features_list.append(word_dependent_features)             
 
-    features = features_list.pop()
-    for feature in features_list:
-        features = pd.merge(features, feature, left_on=['label', 'number'], right_on=['label', 'number']) 
-                
+    features = utils.create_dataframe_from_feature_list(features_list)
+
     #split X , y
-    y = features['label']
-    X = features.drop(['label', 'number'], axis=1)
+    X, y = utils.split_features_and_labels(features, 'label')
 
     return X, y
