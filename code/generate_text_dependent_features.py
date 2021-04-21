@@ -17,11 +17,11 @@ def get_text_dependent_features(dataset):
     for key, text in tqdm(dataset.items()):
         feature = {}
         normalized_text = utils.normalize_text(text)
-        words, _ = utils.tokenize_word_and_sentence(normalized_text)
+        # words, _ = utils.tokenize_word_and_sentence(normalized_text)
 
         alphabets_in_texts = [i for i in Counter(normalized_text) if i in config.alphabet]
         C = len(normalized_text)
-        N = len(words)
+        # N = len(words)
 
         feature['TD_F1'] = C
         # تعداد کل حروف الفبا / C

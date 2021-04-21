@@ -35,7 +35,7 @@ def get_structural_features(dataset):
         total_lines = text.replace(" " , "").count('\n') + 1
         feature['STR_F28'] = empty_lines/total_lines
         # میانگین خطوط غیر خالی
-        feature['STR_F29'] = len(normalized_text)/(total_lines-empty_lines)
+        feature['STR_F29'] = len(text)/(total_lines-empty_lines)
 
         feature['number'] = key
 

@@ -7,6 +7,8 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import cross_validate
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+from sklearn.neighbors import KNeighborsClassifier
 
 import utils
 
@@ -16,88 +18,28 @@ from config import MODEL_SCORE_METRICS
 
 
 def create_random_forest_model(**kwargs):
-    if 'n_estimators' in kwargs.keys():
-        n_estimators = kwargs['n_estimators']
-    else:
-        n_estimators = 100
-    if 'max_depth' in kwargs.keys():
-        max_depth = kwargs['max_depth']
-    else:
-        max_depth = 3
-    return RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
-
+    return RandomForestClassifier(**kwargs)
 
 def create_svc_model(**kwargs):
-    if 'kernel' in kwargs.keys():
-        kernel = kwargs['kernel']
-    else:
-        kernel = 'rbf'
-    if 'gamma' in kwargs.keys():
-        gamma = kwargs['gamma']
-    else:
-        gamma = 'auto'
-    if 'probability' in kwargs.keys():
-        probability = kwargs['probability']
-    else:
-        probability = True
-    if 'tol' in kwargs.keys():
-        tol = kwargs['tol']
-    else:
-        tol = 1e-3
-    if 'C' in kwargs.keys():
-        C = kwargs['C']
-    else:
-        C = 1.0
-    
-    return SVC(kernel=kernel, gamma=gamma, probability=probability, tol=tol, C=C)
-
+    return SVC(**kwargs)
 
 def create_naive_bayes_model(**kwargs):
-    if 'var_smoothing' in kwargs.keys():
-        var_smoothing = kwargs['var_smoothing']
-    else:
-        var_smoothing = 1e-9
-    return GaussianNB(var_smoothing=var_smoothing)
-
+    return GaussianNB(**kwargs)
 
 def create_adaboost_model(**kwargs):
-    if 'n_estimators' in kwargs.keys():
-        n_estimators = kwargs['n_estimators']
-    else:
-        n_estimators = 50
-    if 'learning_rate' in kwargs.keys():
-        learning_rate = kwargs['learning_rate']
-    else:
-        learning_rate = 1
-    if 'random_state' in kwargs.keys():
-        random_state = kwargs['random_state']
-    else:
-        random_state = 0
-    return AdaBoostClassifier(n_estimators=n_estimators, learning_rate=learning_rate, random_state=random_state)
-
+    return AdaBoostClassifier(**kwargs)
 
 def create_mlp_model(**kwargs):
-    if 'activation' in kwargs.keys():
-        activation = kwargs['activation']
-    else:
-        activation = 'relu'
-    if 'solver' in kwargs.keys():
-        solver = kwargs['solver']
-    else:
-        solver = 'adam'
-    if 'random_state' in kwargs.keys():
-        random_state = kwargs['random_state']
-    else:
-        random_state = 1
-    if 'max_iter' in kwargs.keys():
-        max_iter = kwargs['max_iter']
-    else:
-        max_iter = 100
-    if 'hidden_layer_sizes' in kwargs.keys():
-        hidden_layer_sizes = kwargs['hidden_layer_sizes']
-    else:
-        hidden_layer_sizes = (100,)
-    return MLPClassifier(activation=activation, solver=solver, random_state=random_state, max_iter=max_iter, hidden_layer_sizes=hidden_layer_sizes)
+    return MLPClassifier(**kwargs)
+
+def create_lda_model(**kwargs):
+    return LinearDiscriminantAnalysis(**kwargs)
+
+def create_qda_model(**kwargs):
+    return QuadraticDiscriminantAnalysis(**kwargs)
+
+def create_knn_model(**kwargs):
+    return KNeighborsClassifier(**kwargs)
 
 
 class Classifier:
@@ -112,13 +54,18 @@ class Classifier:
             self.model = create_adaboost_model(**kwargs)
         elif model == 'MLP':
             self.model = create_mlp_model(**kwargs)
+        elif model == 'LDA':
+            self.model = create_lda_model(**kwargs)
+        elif model == 'QDA':
+            self.model = create_qda_model(**kwargs)
+        elif model == 'KNN':
+            self.model = create_knn_model(**kwargs)
         else:
             self.model = None
-            print('Model should be selected from: Random Forest, SVM, Naive Bayes, Ada Boost, MLP')
+            print('Model should be selected from: Random Forest, SVM, Naive Bayes, AdaBoost, MLP, LDA, QDA, KNN')
 
     def fit(self, X, y):
         self.model.fit(X, y)
-        return self.predict(X)
 
     def predict(self, X):
         return self.model.predict_proba(X)
@@ -127,6 +74,8 @@ class Classifier:
         cv = ShuffleSplit(n_splits=n_folds, test_size=0.1, random_state=0)
         scores = cross_validate(self.model, X, y, scoring=MODEL_SCORE_METRICS, cv=cv)
         utils.report(scores)
+        self.fit(X, y)
+
     def predict_label(self, X):
         return self.model.predict(X)
         
